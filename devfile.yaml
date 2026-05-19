@@ -48,7 +48,7 @@ components:
         - name: TERM
           value: xterm-256color
         - name: SHELL
-          value: /bin/bash
+          value: /bin/sh
 
       volumeMounts:
         - name: crush-data
@@ -62,7 +62,7 @@ commands:
   - id: install-crush
     exec:
       component: crush
-      commandLine: /projects/setup.sh
+      commandLine: sh /projects/setup.sh
       workingDir: /projects
 
   - id: run-crush

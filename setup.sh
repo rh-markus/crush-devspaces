@@ -1,5 +1,5 @@
-#!/bin/bash
-set -euo pipefail
+#!/bin/sh
+set -eu
 
 if command -v crush &>/dev/null; then
   echo "Crush is already installed: $(crush --version 2>/dev/null || echo 'unknown version')"
@@ -7,7 +7,7 @@ if command -v crush &>/dev/null; then
 fi
 
 echo "==> Adding Charm RPM repository..."
-cat <<'REPO' > /etc/yum.repos.d/charm.repo
+cat > /etc/yum.repos.d/charm.repo <<'REPO'
 [charm]
 name=Charm
 baseurl=https://repo.charm.sh/yum/
