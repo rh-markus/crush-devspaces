@@ -12,14 +12,13 @@ metadata:
 components:
   - name: crush
     container:
-      image: registry.access.redhat.com/ubi9/ubi-minimal:latest
+      image: registry.access.redhat.com/ubi9/ubi:latest
       memoryLimit: 2Gi
       memoryRequest: 512Mi
       cpuLimit: "1"
       cpuRequest: "0.25"
       mountSources: true
       sourceMapping: /projects
-      command: ["sleep", "infinity"]
       env:
         # AI Provider API Keys
         # Override these via Kubernetes secrets in your DevSpaces namespace.
@@ -48,7 +47,7 @@ components:
         - name: TERM
           value: xterm-256color
         - name: SHELL
-          value: /bin/sh
+          value: /bin/bash
 
       volumeMounts:
         - name: crush-data
@@ -62,23 +61,13 @@ commands:
   - id: install-crush
     exec:
       component: crush
-      commandLine: |
-        if command -v crush >/dev/null 2>&1; then
-          echo "Crush already installed";
-        else
-          echo "Adding Charm repo..." &&
-          cat > /etc/yum.repos.d/charm.repo <<REPO
-        [charm]
-        name=Charm
-        baseurl=https://repo.charm.sh/yum/
-        enabled=1
-        gpgcheck=1
-        gpgkey=https://repo.charm.sh/yum/gpg.key
-        REPO
-          microdnf install -y --nodocs crush git-core &&
-          microdnf clean all &&
-          echo "Crush installed successfully";
-        fi
+      commandLine: >
+        command -v crush >/dev/null 2>&1 && echo "Crush already installed" ||
+        (echo "Adding Charm repo..." &&
+        printf '[charm]\nname=Charm\nbaseurl=https://repo.charm.sh/yum/\nenabled=1\ngpgcheck=1\ngpgkey=https://repo.charm.sh/yum/gpg.key\n' > /etc/yum.repos.d/charm.repo &&
+        dnf install -y --nodocs crush git-core &&
+        dnf clean all &&
+        echo "Crush installed successfully")
       workingDir: /
 
   - id: run-crush
