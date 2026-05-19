@@ -1,0 +1,63 @@
+{
+  "$schema": "https://charm.land/crush.json",
+  "providers": {
+    "anthropic": {
+      "type": "anthropic",
+      "api_key": "$ANTHROPIC_API_KEY"
+    },
+    "openai": {
+      "type": "openai",
+      "api_key": "$OPENAI_API_KEY"
+    },
+    "gemini": {
+      "type": "gemini",
+      "api_key": "$GEMINI_API_KEY"
+    },
+    "groq": {
+      "type": "openai-compat",
+      "base_url": "https://api.groq.com/openai/v1",
+      "api_key": "$GROQ_API_KEY",
+      "models": [
+        {
+          "id": "llama-3.3-70b-versatile",
+          "name": "Llama 3.3 70B",
+          "context_window": 128000,
+          "default_max_tokens": 8000
+        }
+      ]
+    },
+    "openrouter": {
+      "type": "openai-compat",
+      "base_url": "https://openrouter.ai/api/v1",
+      "api_key": "$OPENROUTER_API_KEY",
+      "models": [
+        {
+          "id": "anthropic/claude-sonnet-4",
+          "name": "Claude Sonnet 4 (via OpenRouter)",
+          "context_window": 200000,
+          "default_max_tokens": 8000
+        }
+      ]
+    },
+    "custom": {
+      "type": "openai-compat",
+      "base_url": "$CUSTOM_API_ENDPOINT",
+      "api_key": "$CUSTOM_API_KEY",
+      "models": [
+        {
+          "id": "your-model-id",
+          "name": "Your Custom Model",
+          "context_window": 128000,
+          "default_max_tokens": 4096
+        }
+      ]
+    }
+  },
+  "options": {
+    "debug": false,
+    "disable_metrics": true,
+    "disable_provider_auto_update": false
+  },
+  "lsp": {},
+  "mcp": {}
+}
