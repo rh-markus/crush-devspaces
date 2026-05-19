@@ -62,8 +62,24 @@ commands:
   - id: install-crush
     exec:
       component: crush
-      commandLine: sh /projects/setup.sh
-      workingDir: /projects
+      commandLine: |
+        if command -v crush >/dev/null 2>&1; then
+          echo "Crush already installed";
+        else
+          echo "Adding Charm repo..." &&
+          cat > /etc/yum.repos.d/charm.repo <<REPO
+        [charm]
+        name=Charm
+        baseurl=https://repo.charm.sh/yum/
+        enabled=1
+        gpgcheck=1
+        gpgkey=https://repo.charm.sh/yum/gpg.key
+        REPO
+          microdnf install -y --nodocs crush git-core &&
+          microdnf clean all &&
+          echo "Crush installed successfully";
+        fi
+      workingDir: /
 
   - id: run-crush
     exec:
