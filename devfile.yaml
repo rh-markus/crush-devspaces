@@ -69,6 +69,9 @@ commands:
         dnf clean all &&
         echo "Crush installed successfully")
       workingDir: /
+      group:
+        kind: build
+        isDefault: true
 
   - id: run-crush
     exec:
@@ -78,7 +81,3 @@ commands:
       group:
         kind: run
         isDefault: true
-
-events:
-  postStart:
-    - install-crush
