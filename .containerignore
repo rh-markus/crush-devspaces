@@ -1,0 +1,7 @@
+README.md
+build.sh
+setup.sh
+devfile.yaml
+.git
+.gitignore
+*.md
